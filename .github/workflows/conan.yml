@@ -103,6 +103,7 @@ jobs:
           CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
           CONAN_BUILD_TYPES: ${{ matrix.compiler.buildType }}
           CONAN_UPLOAD: ${{ secrets.CONAN_UPLOAD }}
+          CONAN_USERNAME: "mhmoritz3"
         run: |
           export CONAN_${{ matrix.compiler.name }}_VERSIONS="${{ matrix.compiler.version }}"
           python build.py
