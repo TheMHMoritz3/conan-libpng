@@ -11,7 +11,7 @@ repository:
   has_projects: false
 
 branches:
-  - name: "stable/*"
+  - name: "*/stable"
     # https://developer.github.com/v3/repos/branches/#update-branch-protection
     # Branch Protection settings. Set to null to disable
     protection:
