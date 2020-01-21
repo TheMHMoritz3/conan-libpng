@@ -2,23 +2,24 @@ from conans import ConanFile, CMake, tools
 import os
 
 
-class LibnameConan(ConanFile):
-    name = "libname"
+class LibpngConan(ConanFile):
+    name = "libpng"
     description = "Keep it short"
     topics = ("conan", "libname", "logging")
-    url = "https://github.com/bincrafters/conan-libname"
-    homepage = "https://github.com/original_author/original_lib"
+    url = "https://github.com/TheMHMoritz3/conan-libpng"
+    homepage = "http://www.libpng.org/"
     license = "MIT"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
     # Remove following lines if the target lib does not use CMake
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
-
+    version = "1.2.54"
     # Options may need to change depending on the packaged library
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    _source_subfolder = "source_subfolder"
+    _downloads_subfolder = "source_subfolder"
+    _source_subfolder = "source_subfolder/lpng1254"
     _build_subfolder = "build_subfolder"
 
     requires = (
@@ -30,14 +31,16 @@ class LibnameConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        tools.get(**self.conan_data["sources"][self.version])
-        extracted_dir = self.name + "-" + self.version
-        os.rename(extracted_dir, self._source_subfolder)
+        tools.get("https://sourceforge.net/projects/libpng/files/libpng12/older-releases/1.2.54/lpng1254.zip", destination=self._downloads_subfolder)
+#         tools.replace_in_file(self._source_subfolder+"/CMakeLists.txt", "project(libpng C)",
+#                               '''project(libpng C)
+# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+# conan_basic_setup()''')
 
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTS"] = False  # example
-        cmake.configure(build_folder=self._build_subfolder)
+        cmake.configure(source_folder=self._source_subfolder, build_folder=self._build_subfolder)
         return cmake
 
     def build(self):
